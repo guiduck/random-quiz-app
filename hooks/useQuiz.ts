@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
 
-type Quiz = {
+type Question = {
   id: number,
   question: string,
   description: string,
@@ -25,17 +25,17 @@ type Quiz = {
   difficulty: string
 }
 
-const useQuiz = ( dificulty: string ) => {
-  const [data, setData] = useState<Quiz[]>([]);
+const useQuiz = ( dificulty: string ) => { //remember to get quiz by dificulty
+
+  const [data, setData] = useState<Question[]>([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
 
-    const loadData = async () => {
-
+    const loadData = async() => {
       try {
-        const response = await api.get<Quiz[]>('/questions');
+        const response = await api.get<Question[]>('/questions');
         if (response) {
           console.log(response.data);
           return response.data;
@@ -45,18 +45,17 @@ const useQuiz = ( dificulty: string ) => {
       } finally {
         setIsLoading(false);
       }
+    };
 
-      (async () => {
+    (async() => {
         const data = await loadData();
         if (data) {
           setData(data);
         }
-      })()
-    };
-  }, [dificulty])
+    }) ()
+  }, [])
 
   return { data, error, isLoading }
-
 }
 
 export default useQuiz;
