@@ -44,7 +44,6 @@ export const QuizProvider = ({ children }) => {
 
   const [isVerified, setIsVerified] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  // const [quiz, setQuiz] = useState([]);
   const [dificulty, setDificulty] = useState('');
 
   const { data: quiz, error, isLoading } = useQuiz(dificulty);
@@ -63,7 +62,7 @@ export const QuizProvider = ({ children }) => {
 
     verifyUser();
 
-  }, [])
+  }, []);
 
   return (
     <QuizContext.Provider value={{ user, quiz, isVerified, dificulty, setDificulty, setUser }}>
