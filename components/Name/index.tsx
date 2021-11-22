@@ -4,11 +4,11 @@ import { useQuizContext } from '../../context/QuizContext';
 
 const Name: React.FC = () => {
 
-  const { user, isVerified } = useQuizContext();
+  const { user } = useQuizContext();
 
   return (
     <Flex>
-      {isVerified ? <Flex>User name: {user.username}</Flex> : <Heading fontSize='xl'>Welcome</Heading> }
+      {user ? <Flex>User name: {user.username}</Flex> : <Heading fontSize='xl'>Welcome</Heading> }
     </Flex>
   )
 }

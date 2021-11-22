@@ -25,6 +25,13 @@ type Question = {
   difficulty: string
 }
 
+type AnsweredQuestions = {
+  index: number,
+  wasAnswered: boolean,
+  correctAnswerIndex: number,
+  userAnswerIndex: number
+}
+
 type User = {
   username: string
 }
@@ -36,6 +43,14 @@ type QuizContextType = {
   dificulty: string,
   setDificulty: Dispatch<SetStateAction<string>>
   setUser: Dispatch<SetStateAction<User>>
+  score: number,
+  setScore: Dispatch<SetStateAction<Number>>,
+  scoreCard: AnsweredQuestions[],
+  setScoreCard: Dispatch<SetStateAction<AnsweredQuestions[]>>,
+  setQuestionIndex: Dispatch<SetStateAction<number>>,
+  questionIndex: number,
+  answers: any[],
+  correctAnswer: number[]
 }
 
 export const QuizContext = createContext({} as QuizContextType);
@@ -46,9 +61,28 @@ export const QuizProvider = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [dificulty, setDificulty] = useState('');
 
+  //quiz game related state
+  const [score, setScore] = useState(0);
+  const [scoreCard, setScoreCard] = useState<AnsweredQuestions[]>([]);
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState([]);
+  const [correctAnswer, setCorrectAnswer] = useState([]);
+
   const { data: quiz, error, isLoading } = useQuiz(dificulty);
 
   useEffect(() => {
+
+    const loadAnswers = () => {
+      console.log({quiz, questionIndex})
+      const answersArray = Object.keys(quiz[questionIndex].answers).map((key) => [quiz[questionIndex].answers[key]]);
+      const correctAnswersArray = Object.keys(quiz[questionIndex]?.correct_answers).map((key) => quiz[questionIndex].correct_answers[key]);
+      setAnswers(answersArray);
+      console.log(correctAnswersArray);
+
+      const finalCorrectAnswer = correctAnswersArray.map((option, index) => option === 'true' ? index : -1).filter(option => option !== -1);
+      setCorrectAnswer(finalCorrectAnswer)
+    }
+
     const verifyUser = () => {
       const storedUser = localStorage.getItem('user');
       if (storedUser) {
@@ -60,12 +94,30 @@ export const QuizProvider = ({ children }) => {
       }
     }
 
+    if (quiz.length > 0 ){
+      loadAnswers();
+    }
     verifyUser();
 
-  }, []);
+  }, [questionIndex, quiz]);
 
   return (
-    <QuizContext.Provider value={{ user, quiz, isVerified, dificulty, setDificulty, setUser }}>
+    <QuizContext.Provider value={{
+      user,
+      quiz,
+      isVerified,
+      dificulty,
+      setDificulty,
+      setUser,
+      score,
+      setScore,
+      scoreCard,
+      setScoreCard,
+      setQuestionIndex,
+      questionIndex,
+      answers,
+      correctAnswer
+    }}>
       {children}
     </QuizContext.Provider>
   );

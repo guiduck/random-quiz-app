@@ -1,48 +1,72 @@
 import { Button, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import Router from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useQuizContext } from '../../context/QuizContext';
 
 const Quiz: React.FC = () => {
 
-  const [questionIndex, setQuestionIndex] = useState(0);
-  const [score, setScore] = useState(0);
-  const [answers, setAnswers] = useState([]);
+  const [currentQuestion, setCurrentQuestion] = useState({
+    index: null,
+    wasAnswered: false,
+    correctAnswerIndex: null,
+    userAnswerIndex: null
+  });
+  const {
+    quiz,
+    score,
+    setScore,
+    setScoreCard,
+    scoreCard,
+    questionIndex,
+    setQuestionIndex,
+    correctAnswer,
+    answers
+  } = useQuizContext();
+
   const [userAnswer, setUserAnswer] = useState(null);
-  const [correctAnswer, setCorrectAnswer] = useState(null);
-  const { quiz } = useQuizContext();
 
-  useEffect(() => {
-    const answersArray = Object.keys(quiz[questionIndex].answers).map((key) => [quiz[questionIndex].answers[key]]);
-    const correctAnswersArray = Object.keys(quiz[questionIndex].correct_answers).map((key) => quiz[questionIndex].correct_answers[key]);
-    setAnswers(answersArray);
-    console.log(correctAnswersArray)
-    correctAnswersArray.map((option, index) => (option == 'true') ?  setCorrectAnswer(index) : null); //gets the index of the correct answer
-  }, [questionIndex]);
+   useEffect(() => {
+    if (questionIndex == 10) {
+      Router.push('/scoreboard');
+    }
+  }, [questionIndex, quiz]);
 
-  const handleNextQuestion = () => {
-    //remember to check if user answer index is equal do correct answer index on array
-    setQuestionIndex(questionIndex + 1);
-    console.log(correctAnswer);
-    if (userAnswer === correctAnswer) {
+  const handleAnswer = (index: number) => {
+    console.log({index});
+    setCurrentQuestion({
+      index: questionIndex,
+      wasAnswered: true,
+      correctAnswerIndex: correctAnswer,
+      userAnswerIndex: userAnswer
+    });
+    if (questionIndex < 10) {
+      setQuestionIndex(questionIndex + 1);
+    }
 
+    console.log({userAnswer, correctAnswer})
+
+    setUserAnswer(index);
+    if (correctAnswer.includes(index)) {
       setScore(score + 1);
+    }
+
+    if (currentQuestion.wasAnswered && !scoreCard[questionIndex]) {
+      setScoreCard([...scoreCard, currentQuestion]);
     }
   }
 
   return (
     <Flex direction='column' minWidth='100%'>
       <Flex>
-        {`question: ${quiz[questionIndex].question}`}
-      </Flex>
-      <Flex>
-        {`description: ${quiz[questionIndex].description}`}
+        {`question: ${quiz[questionIndex]?.question}`}
       </Flex>
       <Flex direction='column'>
-        {answers.map((answer) => {
+        {answers.map((answer, index) => {
           return (
             answer != '' ?
-            <Button justifyContent='flex-start'>
+            <Button key={index} onClick={()=>handleAnswer(index)} justifyContent='flex-start'>
               <Text
+                key={index}
                 mt={1}
                 fontSize="sm"
                 color={useColorModeValue("gray.600", "gray.400")}
@@ -53,7 +77,6 @@ const Quiz: React.FC = () => {
           );
         })}
       </Flex>
-      <Button onClick={handleNextQuestion}>Next question</Button>
       {score}
     </Flex>
   );
