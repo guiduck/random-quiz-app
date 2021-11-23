@@ -29,7 +29,7 @@ const scoreboard: React.FC = () => {
       </Flex>
       {quiz.map((question, index)=> {
         return (
-          <Flex boxShadow='xl'>
+          <Flex >
             <ScoreCard
               question={question.question}
               answersObject={question.answers}

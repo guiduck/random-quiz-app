@@ -69,13 +69,10 @@ export const QuizProvider = ({ children }) => {
   useEffect(() => {
 
     const loadAnswers = () => {
-      console.log({quiz, questionIndex})
       const answersArray = Object.keys(quiz[questionIndex].answers).map((key) => [quiz[questionIndex].answers[key]]);
       setAnswers(answersArray);
 
       const correctAnswersArray = Object.keys(quiz[questionIndex]?.correct_answers).map((key) => quiz[questionIndex].correct_answers[key]);
-
-      console.log(correctAnswersArray);
 
       const finalCorrectAnswer = correctAnswersArray.map((option, index) => option === 'true' ? index : -1).filter(option => option !== -1);
       setCorrectAnswer(finalCorrectAnswer)

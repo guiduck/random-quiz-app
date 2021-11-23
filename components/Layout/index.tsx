@@ -26,7 +26,7 @@ const Layout: React.FC = ({ children }) => {
           />
         </Flex>
         <Flex ml={-20}>
-          {isLoading ? <Spinner size="xl" /> : children}
+          {isLoading ? <Spinner size="2xl" /> : children}
         </Flex>
       </Flex>
     </Flex>
