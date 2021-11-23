@@ -40,7 +40,7 @@ const QuizForm: React.FC = () => {
   }
 
   return (
-    <Box width='100%' bg={useColorModeValue("gray.200", "gray.700")} rounded={20} p={12} >
+    <Box width='100%' boxShadow='xl' bg={useColorModeValue("gray.200", "gray.700")} rounded={20} p={12} >
 
         <Heading mt={14} mb={5} fontSize='2xl' fontWeight="md" lineHeight="6">
           Random Quiz Generator

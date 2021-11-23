@@ -56,9 +56,9 @@ const Quiz: React.FC = () => {
   }
 
   return (
-    <Flex direction='column' rounded='2xl' background={useColorModeValue('gray.200', 'gray.700')} minWidth='800px' maxWidth='800px'>
+    <Flex boxShadow='xl' direction='column' rounded='2xl' background={useColorModeValue('gray.200', 'gray.700')} minWidth='800px' maxWidth='800px'>
       <Flex direction='column' py={50} px={30} >
-        <Flex boxShadow='xl' my={10}>
+        <Flex boxShadow='md' px={5} my={10}>
           <Text fontSize='xl'>
             {quiz[questionIndex]?.question}
           </Text>
