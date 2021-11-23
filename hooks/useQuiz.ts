@@ -25,7 +25,7 @@ type Question = {
   difficulty: string
 }
 
-const useQuiz = ( dificulty: string ) => { //remember to get quiz by dificulty
+const useQuiz = ( difficulty: string ) => { //remember to get quiz by dificulty
 
   const [data, setData] = useState<Question[]>([]);
   const [error, setError] = useState(null);
@@ -35,10 +35,13 @@ const useQuiz = ( dificulty: string ) => { //remember to get quiz by dificulty
 
     const loadData = async() => {
       try {
-        const response = await api.get<Question[]>('/questions');
-        if (response) {
-          console.log(response.data);
-          return response.data;
+        if (difficulty && difficulty != '') {
+          console.log(difficulty);
+          const response = await api.get<Question[]>('/questions', { params: {limit: 10, difficulty: difficulty}});
+          if (response) {
+            console.log(response.data);
+            return response.data;
+          }
         }
       } catch(err) {
         setError(err.message);
@@ -53,7 +56,7 @@ const useQuiz = ( dificulty: string ) => { //remember to get quiz by dificulty
           setData(data);
         }
     }) ()
-  }, [])
+  }, [difficulty])
 
   return { data, error, isLoading }
 }

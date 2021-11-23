@@ -1,3 +1,4 @@
+import { Flex } from '@chakra-ui/react';
 import Head from 'next/head';
 import Router from 'next/router';
 import React, { useEffect } from 'react';
@@ -6,21 +7,23 @@ import { useQuizContext } from '../context/QuizContext';
 
 const Home: React.FC = () => {
 
-  const { isVerified } = useQuizContext();
+  const { isVerified, user } = useQuizContext();
 
   useEffect(() => {
     if (isVerified) {
       Router.push('/dashboard');
+    } else if (user) {
+      Router.reload();
     }
   }, [isVerified]);
 
   return (
-    <div>
+    <Flex>
       <Head>
         <title>Home</title>
       </Head>
       <QuizForm />
-    </div>
+    </Flex>
   )
 }
 
