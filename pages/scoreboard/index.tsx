@@ -1,4 +1,4 @@
-import { Button, Flex, Heading } from '@chakra-ui/react';
+import { Button, Flex, Heading, Spinner } from '@chakra-ui/react';
 import Router from 'next/router';
 import React, { useEffect } from 'react';
 import ScoreCard from '../../components/ScoreCard';
@@ -6,7 +6,7 @@ import { useQuizContext } from '../../context/QuizContext';
 
 const scoreboard: React.FC = () => {
 
-  const { quiz, score, userAnswers, setIsVerified, isVerified } = useQuizContext();
+  const { quiz, score, setIsVerified, isVerified } = useQuizContext();
 
   const handleRedirect = () => {
     localStorage.removeItem('user');
@@ -27,18 +27,20 @@ const scoreboard: React.FC = () => {
           <Button onClick={handleRedirect}>Play again?</Button>
         </Flex>
       </Flex>
-      {quiz.map((question, index)=> {
-        return (
-          <Flex >
-            <ScoreCard
-              question={question.question}
-              answersObject={question.answers}
-              correctAnswersObject={question.correct_answers}
-              userAnswer={userAnswers[index]}
-            />
-          </Flex>
-        );
-      })}
+      {quiz ?
+        quiz.map((question)=> {
+          return (
+            <Flex >
+              <ScoreCard
+                question={question.question}
+                answersObject={question.answers}
+                correctAnswersObject={question.correct_answers}
+              />
+            </Flex>
+          );
+        }) :
+        <Spinner size="xl" />
+      }
     </Flex>
   )
 }

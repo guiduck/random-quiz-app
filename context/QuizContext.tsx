@@ -55,7 +55,7 @@ export const QuizProvider = ({ children }) => {
   //user choice related state
   const [isVerified, setIsVerified] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const [dificulty, setDificulty] = useState('');
+  const [dificulty, setDificulty] = useState('Easy');
   const [userAnswers, setUserAnswers] = useState([]);
 
   //quiz game related state

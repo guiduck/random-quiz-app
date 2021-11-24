@@ -23,8 +23,7 @@ type Props = {
     answer_d_correct: boolean,
     answer_e_correct: boolean,
     answer_f_correct: boolean
-  },
-  userAnswer: number
+  }
 }
 
 const ScoreCard: React.FC<Props> = ({

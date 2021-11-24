@@ -16,14 +16,16 @@ const Layout: React.FC = ({ children }) => {
       </Flex>
       <Flex>
         <Flex ml={20} mt={10}>
-          <IconButton
-            bg={useColorModeValue('gray.200', 'gray.700')}
-            p={2}
-            aria-label="theme"
-            fontSize="20px"
-            icon={<><SunIcon/><MoonIcon/></>}
-            onClick={toggleColorMode}
-          />
+          {!isLoading && 
+            <IconButton
+              bg={useColorModeValue('gray.200', 'gray.700')}
+              p={2}
+              aria-label="theme"
+              fontSize="20px"
+              icon={<><SunIcon/><MoonIcon/></>}
+              onClick={toggleColorMode}
+            />
+          }
         </Flex>
         <Flex ml={-20}>
           {isLoading ? <Spinner size="2xl" /> : children}

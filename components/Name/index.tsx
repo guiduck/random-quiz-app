@@ -4,7 +4,11 @@ import { useQuizContext } from '../../context/QuizContext';
 
 const Name: React.FC = () => {
 
-  const { isVerified, user } = useQuizContext();
+  const { isVerified, user, isLoading } = useQuizContext();
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <Flex>
